@@ -1,31 +1,51 @@
-version: "3.8"
-
 services:
+
   frontend:
-    depends_on:
-      - backend
-    build: ./frontend
-    volumes:
-      - ./frontend:/app  # Mount local frontend code to /app in the container
-      - /app/node_modules  # Prevent overwriting node_modules
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      # target: dev
+    init: true
     ports:
-      - "4000:3000"
+      - "3000:3000"
     environment:
-      - CHOKIDAR_USEPOLLING=true  # Enable polling for file watching
-      - CI=true  # Disable interactive mode, useful for React in Docker
+      - NODE_ENV=development
+      - CI=true
+    restart: unless-stopped
+    networks:
+      - frontend
+  
+  client-react-nginx:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile-nginx
+    init: true
+    ports:
+      - "80:8080"
+    restart: unless-stopped
+    networks:
+      - frontend
+
 
   backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: dev
+    init: true
     depends_on:
       - db
-    build: ./backend
-    volumes:
-      - ./backend:/app  # Mount local backend code to /app in the container
-      - /app/node_modules  # Prevent overwriting node_modules
     ports:
       - "3001:3001"
+    volumes:
+      - ./backend:/app
     environment:
-      DB_URL: mongodb://db/vidly
-    command: /app/docker-entrypoint.sh  # Use absolute path
+      - NODE_ENV=development
+      - DB_URL=mongodb://db/vidly
+    restart: unless-stopped
+    networks:
+      - frontend
+      - backend
 
   db:
     image: mongo:4.0-xenial
@@ -33,6 +53,11 @@ services:
       - "27017:27017"
     volumes:
       - vidly:/data/db
+    networks:
+      - backend 
 
 volumes:
   vidly:
+networks:
+  frontend:
+  backend:
