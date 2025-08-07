@@ -1,13 +1,15 @@
-FROM node:14.16.0-alpine3.13
+FROM node:16.20.2-buster-slim
 
-RUN addgroup app && adduser -S -G app app
-USER app
+WORKDIR /usr/src/app
 
-WORKDIR /app
+USER node:node
+
 COPY package*.json ./
-RUN npm install
-COPY . .
 
-EXPOSE 3000 
+RUN --mount=type=cache,target=/usr/src/app/.npm \
+    npm set cache /usr/src/app/.npm && \
+    npm install
+
+COPY . .
 
 CMD ["npm", "start"]
