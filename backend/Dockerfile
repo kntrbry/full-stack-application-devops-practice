@@ -1,21 +1,37 @@
-FROM node:14.16.0-alpine3.13
+FROM node:24-bookworm-slim AS base
 
-# Create a group and user for the app
-RUN addgroup app && adduser -S -G app app
-USER app
+WORKDIR /usr/src/app
 
-# Set the working directory
-WORKDIR /app
-
-# Copy package.json and install dependencies
 COPY package*.json ./
-RUN npm install
 
-# Copy the rest of the application files
+FROM base AS dev
+# RUN npm ci --omit=dev
+# RUN npm ci --only=production
+RUN --mount=type=cache,target=/usr/src/app/.npm \
+    npm set cache /usr/src/app/.npm && \
+    npm install
+
 COPY . .
 
-# Expose the application port
+CMD ["sh" , "docker-entrypoint.sh"]
+
+
+FROM base AS prod
+
+ENV NODE_ENV=production
+
+# Install production dependencies only
+RUN --mount=type=cache,target=/usr/src/app/.npm \
+    npm set cache /usr/src/app/.npm && \
+    npm ci --only=production
+
+USER node:node
+
+# Copy the rest of the application files
+COPY --chown=node:node . .
+
 EXPOSE 3001
 
-# Set the default command to run your entrypoint script
-CMD ["/app/docker-entrypoint.sh"]
+# ENTRYPOINT [ "docker-entrypoint.sh" ]
+
+CMD ["node", "index.js"]
