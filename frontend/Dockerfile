@@ -8,8 +8,6 @@ RUN --mount=type=cache,target=/usr/src/app/.npm \
     npm set cache /usr/src/app/.npm && \
     npm install
 
-USER node:node
-
 COPY . .
 
 CMD ["npm", "start"]
