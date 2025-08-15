@@ -58,7 +58,7 @@ jobs:
     - name: Scan frontend image
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: tsnepca/fullstack-app-frontend:${{ steps.meta-frontend.outputs.tags }}
+        image-ref: tsnepca/fullstack-app-frontend:latest
         format: 'table'
         exit-code: '0'  # Fail the action if vulnerabilities are found
         ignore-unfixed: true
@@ -101,7 +101,7 @@ jobs:
     - name: Scan backend image
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: tsnepca/fullstack-app-backend:${{ steps.meta-backend.outputs.tags }}
+        image-ref: tsnepca/fullstack-app-backend:latest
         format: 'table'
         exit-code: '0'  # Fail the action if vulnerabilities are found
         ignore-unfixed: true
@@ -138,7 +138,7 @@ jobs:
     - name: Scan nginx image
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: tsnepca/fullstack-app-nginx:${{ steps.meta-nginx.outputs.tags }}
+        image-ref: tsnepca/fullstack-app-nginx:latest
         format: 'table'
         exit-code: '0'  # Fail the action if vulnerabilities are found
         ignore-unfixed: true
