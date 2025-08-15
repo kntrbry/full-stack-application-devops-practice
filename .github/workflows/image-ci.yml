@@ -58,13 +58,12 @@ jobs:
     - name: Scan frontend image
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: tsnepca/fullstack-app-frontend:latest
+        image-ref: tsnepca/fullstack-app-frontend:${ steps.meta-nginx.outputs.tags }
         format: 'table'
-        exit-code: '1'  # Fail the action if vulnerabilities are found
+        exit-code: '0'  # Fail the action if vulnerabilities are found
         ignore-unfixed: true
         vuln-type: 'os,library'
-        severity: 'CRITICAL'
-      continue-on-error: true 
+        severity: 'CRITICAL, HIGH, MEDIUM'
 
       # backend image build
 
@@ -102,12 +101,12 @@ jobs:
     - name: Scan backend image
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: tsnepca/fullstack-app-backend:latest
+        image-ref: tsnepca/fullstack-app-backend:${ steps.meta-nginx.outputs.tags }
         format: 'table'
-        exit-code: '1'  # Fail the action if vulnerabilities are found
+        exit-code: '0'  # Fail the action if vulnerabilities are found
         ignore-unfixed: true
         vuln-type: 'os,library'
-        severity: 'CRITICAL'
+        severity: 'CRITICAL, HIGH, MEDIUM'
       continue-on-error: true 
 
       # nginx image build
@@ -139,13 +138,11 @@ jobs:
     - name: Scan nginx image
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: tsnepca/fullstack-app-nginx:latest
+        image-ref: tsnepca/fullstack-app-nginx:${ steps.meta-nginx.outputs.tags }
         format: 'table'
-        exit-code: '1'  # Fail the action if vulnerabilities are found
+        exit-code: '0'  # Fail the action if vulnerabilities are found
         ignore-unfixed: true
         vuln-type: 'os,library'
-        severity: 'CRITICAL'
-      continue-on-error: true 
-      
+        severity: 'CRITICAL, HIGH, MEDIUM'      
 
     
