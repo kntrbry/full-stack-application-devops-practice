@@ -6,8 +6,6 @@ on:
     tags: [ "v*" ]
   pull_request:
     branches: [ "main" ]
-    tags: [ "v*" ]
-
 
 jobs:
   build:
@@ -58,7 +56,7 @@ jobs:
         format: 'table'
         exit-code: '1'  # Fail the action if vulnerabilities are found
         ignore-unfixed: true
-        vulnerability-type: 'os,library'
+        vuln-type: 'os,library'
         severity: 'CRITICAL'
 
       # backend image build
@@ -101,7 +99,7 @@ jobs:
         format: 'table'
         exit-code: '1'  # Fail the action if vulnerabilities are found
         ignore-unfixed: true
-        vulnerability-type: 'os,library'
+        vuln-type: 'os,library'
         severity: 'CRITICAL'
 
     - name: Docker Meta (nginx)
@@ -135,7 +133,7 @@ jobs:
         format: 'table'
         exit-code: '1'  # Fail the action if vulnerabilities are found
         ignore-unfixed: true
-        vulnerability-type: 'os,library'
+        vuln-type: 'os,library'
         severity: 'CRITICAL'
 
     
