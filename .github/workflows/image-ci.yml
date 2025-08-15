@@ -63,7 +63,7 @@ jobs:
         exit-code: '0'  # Fail the action if vulnerabilities are found
         ignore-unfixed: true
         vuln-type: 'os,library'
-        severity: 'CRITICAL, HIGH, MEDIUM'
+        severity: 'CRITICAL,HIGH,MEDIUM' 
 
       # backend image build
 
@@ -106,7 +106,7 @@ jobs:
         exit-code: '0'  # Fail the action if vulnerabilities are found
         ignore-unfixed: true
         vuln-type: 'os,library'
-        severity: 'CRITICAL, HIGH, MEDIUM'
+        severity: 'CRITICAL,HIGH,MEDIUM' 
       continue-on-error: true 
 
       # nginx image build
@@ -143,6 +143,6 @@ jobs:
         exit-code: '0'  # Fail the action if vulnerabilities are found
         ignore-unfixed: true
         vuln-type: 'os,library'
-        severity: 'CRITICAL, HIGH, MEDIUM'      
+        severity: 'CRITICAL,HIGH,MEDIUM'      
 
     
