@@ -67,6 +67,10 @@ jobs:
 
       # backend image build
 
+    - name: Spin up database
+      run: |
+        docker run -d --name db -p 27017:27017 -v vidly:/data/db mongo:4.0-xenial
+
     - name: Run backend tests
       run: |
         cd backend
