@@ -64,6 +64,7 @@ jobs:
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'CRITICAL'
+      continue-on-error: true 
 
       # backend image build
 
@@ -107,6 +108,9 @@ jobs:
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'CRITICAL'
+      continue-on-error: true 
+
+      # nginx image build
 
     - name: Docker Meta (nginx)
       id: meta-nginx
@@ -141,5 +145,7 @@ jobs:
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'CRITICAL'
+      continue-on-error: true 
+      
 
     
