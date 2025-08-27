@@ -1,0 +1,34 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.16.0/.schema/devbox.schema.json",
+  "packages": [
+    "nodejs@16",
+    "act@latest",
+    "gh@latest",
+    "gum@latest",
+    "jq@latest",
+    "k9s@latest",
+    "kind@latest",
+    "kluctl@latest",
+    "kubectl@latest",
+    "kubectx@latest",
+    "kubent@latest",
+    "kubernetes-helm@latest",
+    "kustomize@latest",
+    "oras@latest",
+    "google-cloud-sdk@latest",
+    "procps@latest",
+    "go-task@latest",
+    "go@latest",
+    "yq@latest"
+  ],
+  "shell": {
+    "init_hook": [
+      "echo 'Welcome to devbox!' > /dev/null"
+    ],
+    "scripts": {
+      "test": [
+        "echo \"Error: no test specified\" && exit 1"
+      ]
+    }
+  }
+}

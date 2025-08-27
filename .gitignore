@@ -45,6 +45,9 @@ coverage/
 .idea/
 *.sublime-workspace
 
+# Devbox
+.devbox/
+
 # MacOS
 .DS_Store
 
