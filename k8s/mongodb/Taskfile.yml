@@ -1,0 +1,27 @@
+version: '3'
+
+tasks:
+  install-mongodb-community-operator:
+    desc: Install the MongoDB Community Operator using Helm
+    cmds:
+      - helm repo add mongodb https://mongodb.github.io/helm-charts
+      - helm repo update
+      - |
+        helm upgrade --install \
+          community-operator mongodb/community-operator \
+          -n mongodb \
+          --namespace mongodb \
+          --create-namespace
+
+  deploy-mongodb:
+    desc: Deploy a MongoDB Community instance using the MongoDB Community Operator
+    cmds:
+      - kubectl apply -f ./Secret.yaml
+      - kubectl apply -f ./MongoDBCommunity.yaml
+  
+  delete-mongodb:
+    desc: Delete the MongoDB Community instance and the MongoDB Community Operator
+    cmds:
+      - kubectl delete -f ./MongoDBCommunity.yaml
+      - helm uninstall community-operator --namespace mongodb
+      - kubectl delete namespace mongodb
