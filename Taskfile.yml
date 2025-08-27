@@ -1,0 +1,59 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+
+dotenv: [".env"]
+
+tasks:
+  default:
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true
+
+  make-kind-config:
+    cmds:
+      - source .env && KIND_CLUSTER_PATH=$KIND_CLUSTER_PATH envsubst < kind-config.yaml.TEMPLATE > kind-config.yaml
+    desc: Create kind-config.yaml from kind-config.yaml.TEMPLATE specifying the correct hostPath for extraMounts
+
+  create-kind-cluster:
+    cmds:
+      - kind create cluster --config kind-config.yaml
+    desc: Create a kind cluster using kind-config.yaml
+
+  delete-kind-cluster:
+    cmds:
+      - kind delete cluster
+    desc: Delete the kind cluster
+  
+  gcp-create-vpc:
+    cmds:
+      - gcloud compute networks create ${GCP_CLUSTER_NAME} --subnet-mode=custom --description="VPC for fullstack-app GKE cluster"
+      - gcloud compute networks subnets create fullstack-app-subnet --network=${GCP_CLUSTER_NAME} --region=${GCP_REGION} --range=10.0.0.0/20
+    desc: Create a VPC and subnet for the GKE cluster
+
+  gcp-create-cluster:
+    cmds:
+      - gcloud container cluster create ${GCP_CLUSTER_NAME} \
+          --zone ${GCP_ZONE} \
+          --num-nodes=2 \
+          --machine-type=e2-standard-2 \
+          --network=${GCP_CLUSTER_NAME} \
+          --subnetwork=fullstack-app-subnet \
+          --gateway-api=standard \
+          --workload-pool=$(gcloud config get-value project).svc.id.goog
+    desc: Create a GKE cluster in the specified zone using the created VPC and subnet
+  
+  gcp-connect-to-cluster:
+    cmds:
+      - gcloud container clusters get-credentials ${GCP_CLUSTER_NAME} --zone ${GCP_ZONE}
+    desc: Connect kubectl to the GKE cluster
+
+  gcp-delete-cluster:
+    cmds:
+      - gcloud container clusters delete ${GCP_CLUSTER_NAME} --zone ${GCP_ZONE} --quiet
+      - gcloud compute networks subnets delete fullstack-app-subnet --region=${GCP_REGION} --quiet
+      - gcloud compute networks delete ${GCP_CLUSTER_NAME} --quiet 
+    desc: Delete the GKE cluster
