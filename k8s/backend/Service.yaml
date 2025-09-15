@@ -8,4 +8,4 @@ spec:
     app: backend
   ports:
   - port: 3001
-    targetPort: 3001ku
+    targetPort: 3001
