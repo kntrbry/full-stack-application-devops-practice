@@ -1,0 +1,28 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: client-react-nginx
+  namespace: fullstack-app
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  entryPoints:
+    - web
+  routes:
+    # React frontend route
+    - kind: Rule
+      match: Host(`my-app.com`) && (PathPrefix(`/`) && !PathPrefix(`/api`))
+      services:
+        - kind: Service
+          name: client-react-nginx
+          port: 8080
+          scheme: http
+
+    # Backend API route
+    - kind: Rule
+      match: Host(`my-app.com`) && PathPrefix(`/api`)
+      services:
+        - kind: Service
+          name: backend
+          port: 3001
+          scheme: http

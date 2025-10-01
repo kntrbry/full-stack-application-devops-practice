@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-react-nginx
+  namespace: fullstack-app
+  labels:
+    app: client-react-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client-react-nginx
+  template:
+    metadata:
+      labels:
+        app: client-react-nginx
+    spec:
+      containers:
+      - name: client-react-nginx
+        image: tsnepca/fullstack-app-nginx:main
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          limits:
+            memory: "250Mi"
+            cpu: "250m"
+          requests:
+            memory: "100Mi"
+            cpu: "50m"
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+        volumeMounts:
+          - name: nginx-config
+            mountPath: /etc/nginx/conf.d
+            readOnly: true
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: nginx-config
+          name: nginx-config
