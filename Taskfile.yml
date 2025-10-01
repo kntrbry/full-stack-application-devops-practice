@@ -27,6 +27,11 @@ tasks:
     cmds:
       - kind delete cluster
     desc: Delete the kind cluster
+
+  run-cloud-provider-kind:
+    desc: "Run sigs.k8s.io/cloud-provider-kind@latest to enable load balancer services with KinD"
+    cmds:
+      - sudo cloud-provider-kind
   
   gcp-create-vpc:
     cmds:
