@@ -141,8 +141,8 @@ jobs:
         file: ./frontend/Dockerfile-nginx
         push: true
         tags: ${{ steps.meta-nginx.outputs.tags }}
-        cache-from: type=registry,ref=tsnepca/fullstack-app-frontend:cache
-        cache-to: type=registry,ref=tsnepca/fullstack-app-frontend:cache,mode=max
+        cache-from: type=registry,ref=tsnepca/fullstack-app-nginx:cache
+        cache-to: type=registry,ref=tsnepca/fullstack-app-nginx:cache,mode=max
 
     - name: Scan nginx image
       uses: aquasecurity/trivy-action@master
