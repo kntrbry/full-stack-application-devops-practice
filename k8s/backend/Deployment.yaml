@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-deployment
+  name: backend
   namespace: fullstack-app
   labels:
     app: backend
@@ -23,7 +23,7 @@ spec:
               value: "3001"
           envFrom:
             - secretRef:
-                name: backend-secrets
+                name: db-url
           ports:
             - containerPort: 3001
               protocol: TCP
