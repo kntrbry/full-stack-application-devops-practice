@@ -1,0 +1,30 @@
+version: '3'
+
+includes:
+  mongodb:
+    taskfile: ./mongodb/Taskfile.yml
+    dir: ./mongodb
+  common:
+    taskfile: ./common/Taskfile.yml
+    dir: ./common
+  
+tasks: 
+  deploy-backend:
+    desc: Deploy the backend application to the Kubernetes cluster
+    cmds:
+      - kubectl apply -f ./backend
+  
+  delete-backend:
+    desc: Delete the backend application from the Kubernetes cluster
+    cmds:
+      - kubectl delete -f ./backend
+  
+  deploy-frontend:
+    desc: Deploy the frontend application to the Kubernetes cluster
+    cmds:
+      - kubectl apply -f ./frontend
+  
+  delete-frontend:
+    desc: Delete the frontend application from the Kubernetes cluster
+    cmds:
+      - kubectl delete -f ./frontend

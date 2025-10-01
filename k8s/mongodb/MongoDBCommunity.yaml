@@ -1,4 +1,3 @@
----
 apiVersion: mongodbcommunity.mongodb.com/v1
 kind: MongoDBCommunity
 metadata:
@@ -13,15 +12,12 @@ spec:
       modes: ["SCRAM"]
   users:
     - name: vidly-user
-      db: admin
-      passwordSecretRef: # a reference to the secret that will be used to generate the user's password
+      db: fullstack-app
+      passwordSecretRef:
         name: mongodb-credentials
-        key: password
       roles:
-        - name: clusterAdmin
-          db: admin
-        - name: userAdminAnyDatabase
-          db: admin
+        - db: fullstack-app
+          name: readWrite
       scramCredentialsSecretName: mongo-credentials # the name of the secret that will be created to store the user's SCRAM credentials
   additionalMongodConfig:
     storage.wiredTiger.engineConfig.journalCompressor: zlib
