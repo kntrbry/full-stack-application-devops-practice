@@ -1,0 +1,31 @@
+version: '3'
+
+tasks:
+  apply-namespace:
+    desc: Apply the common namespace configuration
+    cmds:
+      - kubectl apply -f Namespace.yaml
+      - kubens fullstack-app
+  
+  clear-namespace:
+    desc: Clear all resources in the fullstack-app namespace
+    cmds:
+      - kubectl delete -f Namespace.yaml --ignore-not-found=true
+  
+
+  deploy-traefik:
+    desc: "Deploy Traefik using Helm"
+    cmds:
+      - helm repo add traefik https://traefik.github.io/charts
+      - helm upgrade --install -n traefik --create-namespace traefik traefik/traefik -f ./Traefik/values.yaml
+  
+  delete-traefik:
+    desc: "Delete Traefik deployment"
+    cmds:
+      - helm uninstall traefik -n traefik
+      - kubectl delete namespace traefik --ignore-not-found=true
+
+  # apply-traefik-middleware:
+  #   desc: "Deploy Traefik middleware"
+  #   cmds:
+  #     - "kubectl apply -f Middleware.yaml"
